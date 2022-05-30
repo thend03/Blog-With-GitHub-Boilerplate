@@ -26,18 +26,18 @@ author = "thend03"
 email = "thend03@163.com"
 author_homepage = "https://www.thend03.com"
 description = "宝宝宝"
-key_words = ['Maverick', '熊猫小A', 'Galileo', 'blog']
+key_words = ['Maverick', 'thend03', 'Galileo', 'blog']
 language = 'zh-CN'
 external_links = [
     {
-        "name": "Maverick",
-        "url": "https://github.com/AlanDecode/Maverick",
+        "name": "maverick",
+        "url": "https://github.com/thend03/blog-maverick",
         "brief": "🏄‍ Go My Own Way."
     },
     {
-        "name": "三無計劃",
-        "url": "https://www.imalan.cn",
-        "brief": "熊猫小A的主页。"
+        "name": "thend03",
+        "url": "https://blog.thend03.com",
+        "brief": "thend03的博客"
     }
 ]
 nav = [
