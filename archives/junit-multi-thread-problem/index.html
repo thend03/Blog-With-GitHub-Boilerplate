@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Maverick,thend03,Galileo,blog" />
+    <meta name="generator" content="Maverick 1.1" />
+    <meta name="template" content="Galileo" />
+    <link rel="alternate" type="application/rss+xml" title="thend03's blog &raquo; RSS 2.0" href="/feed/index.xml" />
+    <link rel="alternate" type="application/atom+xml" title="thend03's blog &raquo; ATOM 1.0" href="/feed/atom/index.xml" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/galileo-3f4dcc35c9.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/ExSearch/ExSearch-182e5a8868.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/katex.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700&display=swap">
+    <script>
+        var ExSearchConfig = {
+            root: "",
+            api: "https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/2c874058232575b297a270bea7edf72e.json"
+        }
+    </script>
+    
+<title>junit下测试用例使用线程池问题 - thend03's blog</title>
+<meta name="author" content="thend03" />
+<meta name="description" content="junit测试用例使用线程池问题" />
+<meta property="og:title" content="junit下测试用例使用线程池问题 - thend03's blog" />
+<meta property="og:description" content="junit测试用例使用线程池问题" />
+<meta property="og:site_name" content="thend03's blog" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/archives/junit-multi-thread-problem/" />
+<meta property="og:image" content="" />
+<meta property="article:published_time" content="2022-05-30T21:12:00-00.00" />
+<meta name="twitter:title" content="junit下测试用例使用线程池问题 - thend03's blog" />
+<meta name="twitter:description" content="junit测试用例使用线程池问题" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="" />
+
+
+    
+<meta http-equiv="x-dns-prefetch-control" content="on">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
+
+    </head>
+    
+    <body>
+        
+        <div class="container">
+            <header id="ga-header">
+                <div first>
+                    <aside id="ga-brand">
+                        <h1 class="brand"><a class="no-style" href="/">thend03's blog</a></h1>
+                        <p>宝宝宝</p>
+                    </aside>
+                </div>
+                <div second id="ga-nav">
+                    <nav class="navs">
+                        <ul><li><a class="ga-highlight" href="/" target="_self">首页</a></li><span class="separator">·</span><li><a class="ga-highlight" href="/archives/" target="_self">归档</a></li><span class="separator">·</span><li><a class="ga-highlight" href="/about/" target="_self">关于</a></li><span class="separator">·</span><li><a href="#" target="_self" class="search-form-input ga-highlight">搜索</a></li></ul>
+                    </nav>
+                </div>
+            </header>
+            <div class="wrapper">
+                
+<main>    
+    <section class="ga-section ga-content">
+        <article class="yue">
+            <h1 class="ga-post_title">junit下测试用例使用线程池问题</h1>
+            <span class="ga-post_meta ga-mono">
+                <span>thend03</span>
+                <time>
+                    2022-05-30
+                </time>
+                
+                in <a no-style class="category" href="/category/默认分类/">
+                    默认分类
+                </a>
+                
+                
+            </span>
+            <div class="ga-content_body">
+                <h2>问题起因</h2>
+<p>有一次要测试下多线程删除redis数据，会不会有问题，比如边界条件没控制好啥的，导致多删数据了，我就想着写一个测试用例，使用线程池去模拟多线程删除的场景。</p>
+<p>原以为是个很简单的场景，结果多线程咋整都有问题。</p>
+<p>下面上个对比的代码，单线程和多线程访问执行，以redis查询为例。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.common.util.concurrent.ThreadFactoryBuilder</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">com.zto.titans.zim.service.ServiceApplication</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.Test</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.runner.RunWith</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.test.context.SpringBootTest</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.data.redis.core.RedisTemplate</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.data.redis.core.StringRedisTemplate</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.test.context.junit4.SpringRunner</span><span class="p">;</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Objects</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.concurrent.ArrayBlockingQueue</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.concurrent.ThreadPoolExecutor</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.concurrent.TimeUnit</span><span class="p">;</span><span class="w"></span>
+
+<span class="nd">@RunWith</span><span class="p">(</span><span class="n">SpringRunner</span><span class="p">.</span><span class="na">class</span><span class="p">)</span><span class="w"></span>
+<span class="nd">@SpringBootTest</span><span class="p">(</span><span class="n">classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ServiceApplication</span><span class="p">.</span><span class="na">class</span><span class="p">)</span><span class="w"></span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BigKeysTest</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nd">@Autowired</span><span class="w"></span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">StringRedisTemplate</span><span class="w"> </span><span class="n">stringRedisTemplate</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;test_set_add_4&quot;</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">ThreadPoolExecutor</span><span class="w"> </span><span class="n">CLEAN_TASK_EXECUTOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayBlockingQueue</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ThreadFactoryBuilder</span><span class="p">().</span><span class="na">setNameFormat</span><span class="p">(</span><span class="s">&quot;sorted-set-clean-task-%d&quot;</span><span class="p">).</span><span class="na">build</span><span class="p">());</span><span class="w"></span>
+
+
+<span class="w">  </span><span class="nd">@Test</span><span class="w"></span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testCard</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">Long</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForZSet</span><span class="p">().</span><span class="na">zCard</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">count</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+
+<span class="w">    </span><span class="nd">@Test</span><span class="w"></span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">multiCard</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">CLEAN_TASK_EXECUTOR</span><span class="p">.</span><span class="na">execute</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">Long</span><span class="w"> </span><span class="n">countOfZset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForZSet</span><span class="p">().</span><span class="na">zCard</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">                    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">countOfZset</span><span class="p">);</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">});</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nd">@Test</span><span class="w"></span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testAddAndGet</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForZSet</span><span class="p">().</span><span class="na">zCard</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>分别执行testCard()和multiCard2个用例，会发现testCard会顺利打印zset key的元素数量，而multiCard只会打印一个end，也不会打印数量，也没有任何报错。</p>
+<p><figure style="flex: 285.2320675105485" ><img width="2704" height="474" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101130699.png" /><figcaption>image-20220710113010666</figcaption></figure></p>
+<p>断点执行，可以获取到错误</p>
+<p><figure style="flex: 160.6100795755968" ><img width="2422" height="754" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101131201.png" /><figcaption>image-20220710113131178</figcaption></figure></p>
+<p>上面是我写这篇文章时，debug获得的错误，我第一次遇到的错误信息是这个,无法从连接池获取连接，给我一顿折磨</p>
+
+<pre><code>org.springframework.data.redis.connection.PoolException: Could not get a resource from the pool; nested exception is io.lettuce.core.RedisException: Cannot retrieve initial cluster partitions from initial URIs [RedisURI [host='10.7.100.100', port=6381], RedisURI [host='10.7.100.101', port=6381], RedisURI [host='10.7.100.101', port=6382], RedisURI [host='10.7.100.100', port=6382]]</code></pre>
+<h2>问题分析</h2>
+<p>一开始我以为是我的redis cluster出现了问题，但是试了好几次testCard()方法都没问题，后来我就去搜了一下，然后发现junit执行完会执行直接退出，而不是等到所有线程都执行完才会退出</p>
+<p>再来复习下jvm退出的条件，一般有2个条件</p>
+<ul>
+<li>jvm中的所有线程都是守护线程</li>
+<li>调用System.exit()执行退出</li>
+</ul>
+<p>junit就是在main方法执行完之后调用了System.exit()直接退出了，而不会等待子线程执行完毕</p>
+<p><figure style="flex: 86.80124223602485" ><img width="2236" height="1288" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101517610.png" /><figcaption>image-20220710151758587</figcaption></figure></p>
+<h2>解决方法</h2>
+<p>解决方法有几种，核心目的都是为了让main线程等子线程执行完再退出，有下面几种方法</p>
+<ul>
+<li>Thread.sleep(1000)，让main线程睡一会，子线程得以执行</li>
+<li>Thread.join()，不过join的话不能用线程池，自己new Thread()，获取线程的引用</li>
+<li>使用CountDownLatch，等子线程执行完了再去执行main线程</li>
+</ul>
+<p>关于Thread.join()，由于我是用的线程池，没有手动new Thread()，不知道线程池有没有办法做join，有知道的可以评论区告诉我一下。</p>
+<p>我是用的CountDownLatch，给一下我的CountDownLatch的示例</p>
+<div class="highlight"><pre><span></span><span class="nd">@Test</span><span class="w"></span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">multiCard</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">CountDownLatch</span><span class="w"> </span><span class="n">countDownLatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">CLEAN_TASK_EXECUTOR</span><span class="p">.</span><span class="na">execute</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">Long</span><span class="w"> </span><span class="n">countOfZset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForZSet</span><span class="p">().</span><span class="na">zCard</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">                    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;zset count: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">countOfZset</span><span class="p">);</span><span class="w"></span>
+<span class="w">                    </span><span class="n">countDownLatch</span><span class="p">.</span><span class="na">countDown</span><span class="p">();</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">});</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">countDownLatch</span><span class="p">.</span><span class="na">await</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;count down end&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">//ignore</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>看控制台输出，2个子线程正常执行完了</p>
+<p><figure style="flex: 89.1095066185319" ><img width="2962" height="1662" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101542769.png" /><figcaption>image-20220710154259740</figcaption></figure></p>
+<h2>号外</h2>
+<p>我第一次遇到这个问题的时候，当天就根据junit+多线程搜到了原因，就是junit的main方法执行完会退出。</p>
+<p>我出于好奇，又跟了一下，想看看哪个地方执行的退出的，上面贴过的这张图，debug的时候根本就没走这里</p>
+<p><figure style="flex: 86.80124223602485" ><img width="2236" height="1288" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101517610.png" /><figcaption>image-20220710151758587</figcaption></figure></p>
+<p>下面分享下我在找test执行流程的过程。</p>
+<p>我这个是一个SpringBoot工程，然后每个测试类都会用打上下面2个注解</p>
+
+<pre><code>@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ServiceApplication.class)</code></pre>
+<p>然后我先找到了这个断点位置<code>org.springframework.test.context.junit4.SpringJUnit4ClassRunner#run</code></p>
+<p><figure style="flex: 99.61734693877551" ><img width="3124" height="1568" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101552654.png" /><figcaption>image-20220710155256627</figcaption></figure></p>
+<p>然后顺着这个方法往上找，上层调用位置是<code>org.junit.runner.JUnitCore#run(org.junit.runner.Runner)</code></p>
+<p><figure style="flex: 87.46355685131195" ><img width="2400" height="1372" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101554446.png" /><figcaption>image-20220710155438424</figcaption></figure></p>
+<p>但是顺着JUnitCore#run往上找调用的时候，发现上层调用的2个地方断点根本都不会进</p>
+<p><figure style="flex: 167.45379876796716" ><img width="3262" height="974" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101558598.png" /><figcaption>image-20220710155816570</figcaption></figure></p>
+<p>然后我在debug的时候，发现有一个往前的按钮，点击这个按钮就可以回到最最开始的入口</p>
+<p><figure  size-undefined><img width="-1" height="-1" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613001.mov" /></figure></p>
+<p>就是这个类com.intellij.rt.junit.JUnitStarter，但是我在idea里没有看到相关的源码。</p>
+<p>后来我又搜了一下，在github上搜到了一个类文件，这个类文件的main方法最后也是执行了System.exit()</p>
+<p><figure style="flex: 95.48672566371681" ><img width="2158" height="1130" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613352.png" /><figcaption>image-20220710161335317</figcaption></figure></p>
+<p><a href="https://github.com/joewalnes/idea-community/blob/master/plugins/junit_rt/src/com/intellij/rt/execution/junit/JUnitStarter.java">github类文件地址</a></p>
+<p>这个可能是idea自己对junit做了封装，更多的细节我暂时没有探索到，有知道的也可以评论区告诉我</p>
+<h2>后记</h2>
+<p>总的来说，这是个说大不大，说小不小的问题，如果对junit和jvm的退出机制了解不是很多的情况下，可能会和我犯一样的错误，浪费几个小时的时间在那debug。</p>
+<p>我debug的过程中，甚至debug到了netty的worker关闭的代码，我甚至都在怀疑，netty出问题了???</p>
+<p>后来实际证明是我自己想多了。</p>
+<p>不过也不能说踩坑不好吧，生活总是在趟过一个又一个或大或小的坑中过去的。</p>
+<p>希望大家都能将遇到的每一个坑和挫折踩在脚下，快乐成长</p>
+
+            </div>
+        </article>
+        <div id="ga-tags">
+    
+    <span class="ga-tag">
+        <a class="ga-highlight" href="/tag/junit/">#junit</a>
+    </span>
+    
+    <span class="ga-tag">
+        <a class="ga-highlight" href="/tag/multi thread/">#multi thread</a>
+    </span>
+    
+</div>
+    </section>
+
+    
+<section id="ga-content_pager">
+
+    <div class="next">
+        <h3>没有了</h3>
+        <p class="yue">这是最新的文章</p>
+    </div>
+
+
+    <div class="prev">
+        <a class="ga-highlight" href="/archives/happy-birthday-2-fayy/">菲宝生日快乐</a>
+        <p class="yue">生日快乐菲宝</p>
+    </div>
+
+</section>
+
+
+    
+
+</main>
+
+                <footer class="ga-mono" id="ga-footer">
+                    <section>
+                        <span id="ga-uptime"></span>
+                        <span class="brand">thend03's blog</span>
+                    </section>
+                    <section>
+                        <p class="copyright">
+                            <span>Copyright © 2022 thend03</span>
+                            <span>Powered by <a no-style href="https://github.com/AlanDecode/Maverick" target="_blank">Maverick & Galileo</a></span>
+                        </p>
+                        <div class="copyright">
+                            <span class="footer-addon">
+                                
+                            </span>
+                            <nav class="social-links">
+                                <ul><li><a class="no-style" title="Twitter" href="https://twitter.com/AlanDecode" target="_blank"><i class="gi gi-twitter"></i>Twitter</a></li><span class="separator">·</span><li><a class="no-style" title="GitHub" href="https://github.com/AlanDecode" target="_blank"><i class="gi gi-github"></i>GitHub</a></li><span class="separator">·</span><li><a class="no-style" title="Weibo" href="https://weibo.com/5245109677/" target="_blank"><i class="gi gi-weibo"></i>Weibo</a></li></ul>
+                            </nav>
+                        </div>
+                    </section>
+                    <script>
+                        var site_build_date = "2022-05-09T21:33+08:00"
+                    </script>
+                    <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/galileo-dc4baa7cf4.js"></script>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!--katex-->
+    <script defer src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/katex.min.js"></script>
+    <script>
+    mathOpts = {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "\\[", right: "\\]", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\(", right: "\\)", display: false}
+        ]
+    };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/auto-render.min.js" onload="renderMathInElement(document.body, mathOpts);"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/ExSearch/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/ExSearch/ExSearch-493cb9cd89.js"></script>
+
+    
+    </body>
+</html>
