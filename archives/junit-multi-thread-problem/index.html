@@ -19,7 +19,7 @@
     <script>
         var ExSearchConfig = {
             root: "",
-            api: "https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/2c874058232575b297a270bea7edf72e.json"
+            api: "https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/ca106be18a71273b90ed3133def6311b.json"
         }
     </script>
     
@@ -32,7 +32,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/archives/junit-multi-thread-problem/" />
 <meta property="og:image" content="" />
-<meta property="article:published_time" content="2022-05-30T21:12:00-00.00" />
+<meta property="article:published_time" content="2022-07-10T16:33:00-00.00" />
 <meta name="twitter:title" content="junit下测试用例使用线程池问题 - thend03's blog" />
 <meta name="twitter:description" content="junit测试用例使用线程池问题" />
 <meta name="twitter:card" content="summary" />
@@ -70,7 +70,7 @@
             <span class="ga-post_meta ga-mono">
                 <span>thend03</span>
                 <time>
-                    2022-05-30
+                    2022-07-10
                 </time>
                 
                 in <a no-style class="category" href="/category/默认分类/">
@@ -205,7 +205,7 @@
 <p>但是顺着JUnitCore#run往上找调用的时候，发现上层调用的2个地方断点根本都不会进</p>
 <p><figure style="flex: 167.45379876796716" ><img width="3262" height="974" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101558598.png" /><figcaption>image-20220710155816570</figcaption></figure></p>
 <p>然后我在debug的时候，发现有一个往前的按钮，点击这个按钮就可以回到最最开始的入口</p>
-<p><figure  size-undefined><img width="-1" height="-1" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613001.mov" /></figure></p>
+<p><figure style="flex: 239.77635782747603" ><img width="3002" height="626" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101631838.gif" /><figcaption>back</figcaption></figure></p>
 <p>就是这个类com.intellij.rt.junit.JUnitStarter，但是我在idea里没有看到相关的源码。</p>
 <p>后来我又搜了一下，在github上搜到了一个类文件，这个类文件的main方法最后也是执行了System.exit()</p>
 <p><figure style="flex: 95.48672566371681" ><img width="2158" height="1130" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613352.png" /><figcaption>image-20220710161335317</figcaption></figure></p>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><id>/</id><title>thend03's blog</title><updated>2022-07-10T08:21:11.403323+08:06</updated><author><name>thend03</name><email>thend03@163.com</email></author><link href="/" rel="alternate"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><logo>https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/logo.png</logo><subtitle>宝宝宝</subtitle><entry><id>/archives/happy-birthday-2-fayy/</id><title>菲宝生日快乐</title><updated>2022-07-10T08:21:11.403476+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;菲宝的26岁生日&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><id>/</id><title>thend03's blog</title><updated>2022-07-10T08:34:20.509834+08:06</updated><author><name>thend03</name><email>thend03@163.com</email></author><link href="/" rel="alternate"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><logo>https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/logo.png</logo><subtitle>宝宝宝</subtitle><entry><id>/archives/happy-birthday-2-fayy/</id><title>菲宝生日快乐</title><updated>2022-07-10T08:34:20.509942+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;菲宝的26岁生日&lt;/h2&gt;
 &lt;p&gt;时光如梭，白驹过隙，时间来到了菲宝的26岁生日，这一天不只是个生日，也是菲宝逐步走向成熟的一个标志性时间。&lt;/p&gt;
 &lt;p&gt;宝，生日快乐哦，我这去不了，在你26岁成年这一天留下了一些遗憾，对不起，我的宝。&lt;/p&gt;
 &lt;p&gt;在这里蹦床给菲宝唱一首歌：happy birthday to you, happy birthday to you, happy birthday to you.&lt;/p&gt;
@@ -44,7 +44,7 @@
 &lt;p&gt;我们一起过的第3个生日，我们后面还会在一起过好多生日。&lt;/p&gt;
 &lt;p&gt;爱你哦宝，爱我的话，给我回答，我们的爱呀爱呀没时差。&lt;/p&gt;
 &lt;p&gt;此致，敬礼，蹦床，2022年05月30日于上海青浦华新。&lt;/p&gt;
-</content><link href="/archives/happy-birthday-2-fayy/" rel="alternate"/><published>2022-05-30T21:12:00+08:06</published></entry><entry><id>/archives/junit-multi-thread-problem/</id><title>junit下测试用例使用线程池问题</title><updated>2022-07-10T08:21:11.403394+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;问题起因&lt;/h2&gt;
+</content><link href="/archives/happy-birthday-2-fayy/" rel="alternate"/><published>2022-05-30T21:12:00+08:06</published></entry><entry><id>/archives/junit-multi-thread-problem/</id><title>junit下测试用例使用线程池问题</title><updated>2022-07-10T08:34:20.509886+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;问题起因&lt;/h2&gt;
 &lt;p&gt;有一次要测试下多线程删除redis数据，会不会有问题，比如边界条件没控制好啥的，导致多删数据了，我就想着写一个测试用例，使用线程池去模拟多线程删除的场景。&lt;/p&gt;
 &lt;p&gt;原以为是个很简单的场景，结果多线程咋整都有问题。&lt;/p&gt;
 &lt;p&gt;下面上个对比的代码，单线程和多线程访问执行，以redis查询为例。&lt;/p&gt;
@@ -169,7 +169,7 @@
 &lt;p&gt;但是顺着JUnitCore#run往上找调用的时候，发现上层调用的2个地方断点根本都不会进&lt;/p&gt;
 &lt;p&gt;&lt;figure style="flex: 167.45379876796716" &gt;&lt;img width="3262" height="974" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101558598.png" /&gt;&lt;figcaption&gt;image-20220710155816570&lt;/figcaption&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;然后我在debug的时候，发现有一个往前的按钮，点击这个按钮就可以回到最最开始的入口&lt;/p&gt;
-&lt;p&gt;&lt;figure  size-undefined&gt;&lt;img width="-1" height="-1" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613001.mov" /&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure style="flex: 239.77635782747603" &gt;&lt;img width="3002" height="626" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101631838.gif" /&gt;&lt;figcaption&gt;back&lt;/figcaption&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;就是这个类com.intellij.rt.junit.JUnitStarter，但是我在idea里没有看到相关的源码。&lt;/p&gt;
 &lt;p&gt;后来我又搜了一下，在github上搜到了一个类文件，这个类文件的main方法最后也是执行了System.exit()&lt;/p&gt;
 &lt;p&gt;&lt;figure style="flex: 95.48672566371681" &gt;&lt;img width="2158" height="1130" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613352.png" /&gt;&lt;figcaption&gt;image-20220710161335317&lt;/figcaption&gt;&lt;/figure&gt;&lt;/p&gt;
@@ -181,4 +181,4 @@
 &lt;p&gt;后来实际证明是我自己想多了。&lt;/p&gt;
 &lt;p&gt;不过也不能说踩坑不好吧，生活总是在趟过一个又一个或大或小的坑中过去的。&lt;/p&gt;
 &lt;p&gt;希望大家都能将遇到的每一个坑和挫折踩在脚下，快乐成长&lt;/p&gt;
-</content><link href="/archives/junit-multi-thread-problem/" rel="alternate"/><published>2022-05-30T21:12:00+08:06</published></entry></feed>
+</content><link href="/archives/junit-multi-thread-problem/" rel="alternate"/><published>2022-07-10T16:33:00+08:06</published></entry></feed>
