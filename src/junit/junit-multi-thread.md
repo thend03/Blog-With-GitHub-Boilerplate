@@ -2,7 +2,7 @@
 layout: post
 title: junit下测试用例使用线程池问题
 slug: junit-multi-thread-problem
-date: 2022-05-30 21:12
+date: 2022-07-10 16:33
 status: publish
 author: thend03
 categories:
@@ -200,7 +200,7 @@ public void multiCard() {
 
 然后我在debug的时候，发现有一个往前的按钮，点击这个按钮就可以回到最最开始的入口
 
-![](https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613001.mov)
+![back](https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101631838.gif)
 
 就是这个类com.intellij.rt.junit.JUnitStarter，但是我在idea里没有看到相关的源码。
 
