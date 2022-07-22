@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><id>/</id><title>thend03's blog</title><updated>2022-07-22T09:26:05.151040+08:06</updated><author><name>thend03</name><email>thend03@163.com</email></author><link href="/" rel="alternate"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><logo>https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/logo.png</logo><subtitle>宝宝宝</subtitle><entry><id>/archives/happy-birthday-2-fayy/</id><title>菲宝生日快乐</title><updated>2022-07-22T09:26:05.151191+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;菲宝的26岁生日&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN"><id>/</id><title>thend03's blog</title><updated>2022-07-22T09:34:01.836679+08:06</updated><author><name>thend03</name><email>thend03@163.com</email></author><link href="/" rel="alternate"/><generator uri="https://lkiesow.github.io/python-feedgen" version="0.9.0">python-feedgen</generator><logo>https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/logo.png</logo><subtitle>thend03的个人博客</subtitle><entry><id>/archives/happy-birthday-2-fayy/</id><title>菲宝生日快乐</title><updated>2022-07-22T09:34:01.836813+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;菲宝的26岁生日&lt;/h2&gt;
 &lt;p&gt;时光如梭，白驹过隙，时间来到了菲宝的26岁生日，这一天不只是个生日，也是菲宝逐步走向成熟的一个标志性时间。&lt;/p&gt;
 &lt;p&gt;宝，生日快乐哦，我这去不了，在你26岁成年这一天留下了一些遗憾，对不起，我的宝。&lt;/p&gt;
 &lt;p&gt;在这里蹦床给菲宝唱一首歌：happy birthday to you, happy birthday to you, happy birthday to you.&lt;/p&gt;
@@ -44,7 +44,7 @@
 &lt;p&gt;我们一起过的第3个生日，我们后面还会在一起过好多生日。&lt;/p&gt;
 &lt;p&gt;爱你哦宝，爱我的话，给我回答，我们的爱呀爱呀没时差。&lt;/p&gt;
 &lt;p&gt;此致，敬礼，蹦床，2022年05月30日于上海青浦华新。&lt;/p&gt;
-</content><link href="/archives/happy-birthday-2-fayy/" rel="alternate"/><published>2022-05-30T21:12:00+08:06</published></entry><entry><id>/archives/junit-multi-thread-problem/</id><title>junit下测试用例使用线程池问题</title><updated>2022-07-22T09:26:05.151123+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;问题起因&lt;/h2&gt;
+</content><link href="/archives/happy-birthday-2-fayy/" rel="alternate"/><published>2022-05-30T21:12:00+08:06</published></entry><entry><id>/archives/junit-multi-thread-problem/</id><title>junit下测试用例使用线程池问题</title><updated>2022-07-22T09:34:01.836752+00:00</updated><author><name>thend03</name><email>thend03@163.com</email><uri>https://www.thend03.com</uri></author><content>&lt;h2&gt;问题起因&lt;/h2&gt;
 &lt;p&gt;有一次要测试下多线程删除redis数据，会不会有问题，比如边界条件没控制好啥的，导致多删数据了，我就想着写一个测试用例，使用线程池去模拟多线程删除的场景。&lt;/p&gt;
 &lt;p&gt;原以为是个很简单的场景，结果多线程咋整都有问题。&lt;/p&gt;
 &lt;p&gt;下面上个对比的代码，单线程和多线程访问执行，以redis查询为例。&lt;/p&gt;
