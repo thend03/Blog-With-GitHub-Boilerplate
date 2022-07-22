@@ -26,7 +26,7 @@ site_build_date = "2022-05-09T21:33+08:00"
 author = "thend03"
 email = "thend03@163.com"
 author_homepage = "https://www.thend03.com"
-description = "宝宝宝"
+description = "thend03的个人博客"
 key_words = ['Maverick', 'thend03', 'Galileo', 'blog']
 language = 'zh-CN'
 external_links = [
@@ -62,18 +62,22 @@ nav = [
 social_links = [
     {
         "name": "Twitter",
-        "url": "https://twitter.com/AlanDecode",
+        "url": "https://twitter.com/TobeWhenever",
         "icon": "gi gi-twitter"
     },
     {
         "name": "GitHub",
-        "url": "https://github.com/AlanDecode",
+        "url": "https://github.com/thend03",
         "icon": "gi gi-github"
     },
     {
-        "name": "Weibo",
-        "url": "https://weibo.com/5245109677/",
-        "icon": "gi gi-weibo"
+        "name": "微信公众号",
+        "url": "站在海边看远方",
+        "icon": "gi gi-wechat"
+    }, {
+        "name": "简书",
+        "url": "https://www.jianshu.com/u/239c3a8e0747",
+        "icon": "gi gi-jianshu"
     }
 ]
 
