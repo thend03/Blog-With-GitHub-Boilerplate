@@ -8,19 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="Maverick,thend03,Galileo,blog" />
     <meta name="generator" content="Maverick 1.1" />
-    <meta name="template" content="Galileo" />
+    <meta name="template" content="Kepler" />
     <link rel="alternate" type="application/rss+xml" title="thend03's blog &raquo; RSS 2.0" href="/feed/index.xml" />
     <link rel="alternate" type="application/atom+xml" title="thend03's blog &raquo; ATOM 1.0" href="/feed/atom/index.xml" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/galileo-3f4dcc35c9.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/kepler-426969802d.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/ExSearch/ExSearch-182e5a8868.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/katex.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Fira+Code&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.10.0/dist/tocbot.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
     <script>
         var ExSearchConfig = {
             root: "",
             api: "https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/ca106be18a71273b90ed3133def6311b.json"
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            if(/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)){
+                document.body.classList.add('safari')
+            }else{
+                document.body.classList.remove('safari')
+            }
+        });
     </script>
     
 <title>junit下测试用例使用线程池问题 - thend03's blog</title>
@@ -45,42 +54,81 @@
 
     </head>
     
-    <body>
-        
-        <div class="container">
-            <header id="ga-header">
-                <div first>
-                    <aside id="ga-brand">
-                        <h1 class="brand"><a class="no-style" href="/">thend03's blog</a></h1>
-                        <p>宝宝宝</p>
-                    </aside>
-                </div>
-                <div second id="ga-nav">
-                    <nav class="navs">
-                        <ul><li><a class="ga-highlight" href="/" target="_self">首页</a></li><span class="separator">·</span><li><a class="ga-highlight" href="/archives/" target="_self">归档</a></li><span class="separator">·</span><li><a class="ga-highlight" href="/about/" target="_self">关于</a></li><span class="separator">·</span><li><a href="#" target="_self" class="search-form-input ga-highlight">搜索</a></li></ul>
+    <body class="content">
+        <header>
+            <div class="container">
+                <section>
+                    <a href="/"><img src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/logo.png">thend03's blog</a>
+                </section>
+                <section>
+                    <nav>
+                        <ul>
+                            
+                                <li><a href="https://github.com/thend03/blog-maverick" target="_blank">maverick</a></li>
+                            
+                                <li><a href="https://blog.thend03.com" target="_blank">thend03</a></li>
+                            
+                        </ul>
                     </nav>
-                </div>
-            </header>
-            <div class="wrapper">
+                </section>
+    
+                <section>
+                    <a hidden class="toggle-toc" target="_self" href="javascript:void(0)" onclick="$(body).toggleClass('toc-open')"><i class="fa fa-align-right"></i></a>
+                    <a hidden class="toggle-navbar" target="_self" href="javascript:void(0)" onclick="$(body).toggleClass('navbar-open')"><i class="fa fa-indent"></i></a>
+                    <button class="search-form-input"><i class="fa fa-search"></i></button>
+                </section>
+            </div>
+        </header>
+
+        <main>
+            <div id="pjax-container" class="container">
+                <aside id="navbar" class="no-scrollbar">
+                    
+                    <section class="sidebar-nav">
+                        
+                            <div class="None" ><span><a href="/">首页</a></span></div>
+                        
+                            <div class="None" ><span><a href="/archives/">归档</a></span></div>
+                        
+                            <div class="None" ><span><a href="/about/">关于</a></span></div>
+                        
+                    </section>
+                    
+                    <section>
+                        
+    <div class="open "><span><a href="/category/默认分类/">默认分类</a><button class="toggle_sidebar fa"></button></span><ul><li class="current"><a href="/archives/junit-multi-thread-problem/">junit下测试用例使用线程池问题</a></li><li class=""><a href="/archives/happy-birthday-2-fayy/">菲宝生日快乐</a></li></ul></div>
+
+                    </section>
+                    <section hidden class="sidebar-external-link">
+                        
+                            <div class="external"><span><a href="https://github.com/thend03/blog-maverick">maverick</a><button class="go-external"><i class="fa fa-external-link"></i></button></span></div>
+                        
+                            <div class="external"><span><a href="https://blog.thend03.com">thend03</a><button class="go-external"><i class="fa fa-external-link"></i></button></span></div>
+                        
+                    </section>
+                    <section class="maverick">
+                        <div><span style="border: 1px solid #d4dadf;"><a href="https://github.com/AlanDecode/Maverick" target="_blank">Maverick & Kepler</a></span></div>
+                    </section>
+                </aside>
+                <div id="content-wrapper">
+                    <div id="content">
+    <section>
+        <h1 class="post-title">junit下测试用例使用线程池问题</h1>
+        <p class="post-meta">
+            <time>July 10 2022</time>
+            <span class="tags">
                 
-<main>    
-    <section class="ga-section ga-content">
-        <article class="yue">
-            <h1 class="ga-post_title">junit下测试用例使用线程池问题</h1>
-            <span class="ga-post_meta ga-mono">
-                <span>thend03</span>
-                <time>
-                    2022-07-10
-                </time>
+                <span>
+                    <a href="/tag/junit/">#junit</a>
+                </span>
                 
-                in <a no-style class="category" href="/category/默认分类/">
-                    默认分类
-                </a>
-                
+                <span>
+                    <a href="/tag/multi thread/">#multi thread</a>
+                </span>
                 
             </span>
-            <div class="ga-content_body">
-                <h2>问题起因</h2>
+        </p>
+        <article class="yue"><h2>问题起因</h2>
 <p>有一次要测试下多线程删除redis数据，会不会有问题，比如边界条件没控制好啥的，导致多删数据了，我就想着写一个测试用例，使用线程池去模拟多线程删除的场景。</p>
 <p>原以为是个很简单的场景，结果多线程咋整都有问题。</p>
 <p>下面上个对比的代码，单线程和多线程访问执行，以redis查询为例。</p>
@@ -140,9 +188,9 @@
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 <p>分别执行testCard()和multiCard2个用例，会发现testCard会顺利打印zset key的元素数量，而multiCard只会打印一个end，也不会打印数量，也没有任何报错。</p>
-<p><figure style="flex: 285.2320675105485" ><img width="2704" height="474" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101130699.png" /><figcaption>image-20220710113010666</figcaption></figure></p>
+<p><figure><img data-width="2704" data-height="474" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101130699.png" alt="image-20220710113010666" /><figcaption>image-20220710113010666</figcaption></figure></p>
 <p>断点执行，可以获取到错误</p>
-<p><figure style="flex: 160.6100795755968" ><img width="2422" height="754" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101131201.png" /><figcaption>image-20220710113131178</figcaption></figure></p>
+<p><figure><img data-width="2422" data-height="754" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101131201.png" alt="image-20220710113131178" /><figcaption>image-20220710113131178</figcaption></figure></p>
 <p>上面是我写这篇文章时，debug获得的错误，我第一次遇到的错误信息是这个,无法从连接池获取连接，给我一顿折磨</p>
 
 <pre><code>org.springframework.data.redis.connection.PoolException: Could not get a resource from the pool; nested exception is io.lettuce.core.RedisException: Cannot retrieve initial cluster partitions from initial URIs [RedisURI [host='10.7.100.100', port=6381], RedisURI [host='10.7.100.101', port=6381], RedisURI [host='10.7.100.101', port=6382], RedisURI [host='10.7.100.100', port=6382]]</code></pre>
@@ -154,7 +202,7 @@
 <li>调用System.exit()执行退出</li>
 </ul>
 <p>junit就是在main方法执行完之后调用了System.exit()直接退出了，而不会等待子线程执行完毕</p>
-<p><figure style="flex: 86.80124223602485" ><img width="2236" height="1288" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101517610.png" /><figcaption>image-20220710151758587</figcaption></figure></p>
+<p><figure><img data-width="2236" data-height="1288" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101517610.png" alt="image-20220710151758587" /><figcaption>image-20220710151758587</figcaption></figure></p>
 <h2>解决方法</h2>
 <p>解决方法有几种，核心目的都是为了让main线程等子线程执行完再退出，有下面几种方法</p>
 <ul>
@@ -188,27 +236,27 @@
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 <p>看控制台输出，2个子线程正常执行完了</p>
-<p><figure style="flex: 89.1095066185319" ><img width="2962" height="1662" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101542769.png" /><figcaption>image-20220710154259740</figcaption></figure></p>
+<p><figure><img data-width="2962" data-height="1662" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101542769.png" alt="image-20220710154259740" /><figcaption>image-20220710154259740</figcaption></figure></p>
 <h2>号外</h2>
 <p>我第一次遇到这个问题的时候，当天就根据junit+多线程搜到了原因，就是junit的main方法执行完会退出。</p>
 <p>我出于好奇，又跟了一下，想看看哪个地方执行的退出的，上面贴过的这张图，debug的时候根本就没走这里</p>
-<p><figure style="flex: 86.80124223602485" ><img width="2236" height="1288" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101517610.png" /><figcaption>image-20220710151758587</figcaption></figure></p>
+<p><figure><img data-width="2236" data-height="1288" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101517610.png" alt="image-20220710151758587" /><figcaption>image-20220710151758587</figcaption></figure></p>
 <p>下面分享下我在找test执行流程的过程。</p>
 <p>我这个是一个SpringBoot工程，然后每个测试类都会用打上下面2个注解</p>
 
 <pre><code>@RunWith(SpringRunner.class)
 @SpringBootTest(classes = ServiceApplication.class)</code></pre>
 <p>然后我先找到了这个断点位置<code>org.springframework.test.context.junit4.SpringJUnit4ClassRunner#run</code></p>
-<p><figure style="flex: 99.61734693877551" ><img width="3124" height="1568" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101552654.png" /><figcaption>image-20220710155256627</figcaption></figure></p>
+<p><figure><img data-width="3124" data-height="1568" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101552654.png" alt="image-20220710155256627" /><figcaption>image-20220710155256627</figcaption></figure></p>
 <p>然后顺着这个方法往上找，上层调用位置是<code>org.junit.runner.JUnitCore#run(org.junit.runner.Runner)</code></p>
-<p><figure style="flex: 87.46355685131195" ><img width="2400" height="1372" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101554446.png" /><figcaption>image-20220710155438424</figcaption></figure></p>
+<p><figure><img data-width="2400" data-height="1372" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101554446.png" alt="image-20220710155438424" /><figcaption>image-20220710155438424</figcaption></figure></p>
 <p>但是顺着JUnitCore#run往上找调用的时候，发现上层调用的2个地方断点根本都不会进</p>
-<p><figure style="flex: 167.45379876796716" ><img width="3262" height="974" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101558598.png" /><figcaption>image-20220710155816570</figcaption></figure></p>
+<p><figure><img data-width="3262" data-height="974" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101558598.png" alt="image-20220710155816570" /><figcaption>image-20220710155816570</figcaption></figure></p>
 <p>然后我在debug的时候，发现有一个往前的按钮，点击这个按钮就可以回到最最开始的入口</p>
-<p><figure style="flex: 239.77635782747603" ><img width="3002" height="626" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101631838.gif" /><figcaption>back</figcaption></figure></p>
+<p><figure><img data-width="3002" data-height="626" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101631838.gif" alt="back" /><figcaption>back</figcaption></figure></p>
 <p>就是这个类com.intellij.rt.junit.JUnitStarter，但是我在idea里没有看到相关的源码。</p>
 <p>后来我又搜了一下，在github上搜到了一个类文件，这个类文件的main方法最后也是执行了System.exit()</p>
-<p><figure style="flex: 95.48672566371681" ><img width="2158" height="1130" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613352.png" /><figcaption>image-20220710161335317</figcaption></figure></p>
+<p><figure><img data-width="2158" data-height="1130" src="https://cdn.jsdelivr.net/gh/thend03/mdPic/picGo/202207101613352.png" alt="image-20220710161335317" /><figcaption>image-20220710161335317</figcaption></figure></p>
 <p><a href="https://github.com/joewalnes/idea-community/blob/master/plugins/junit_rt/src/com/intellij/rt/execution/junit/JUnitStarter.java">github类文件地址</a></p>
 <p>这个可能是idea自己对junit做了封装，更多的细节我暂时没有探索到，有知道的也可以评论区告诉我</p>
 <h2>后记</h2>
@@ -217,88 +265,88 @@
 <p>后来实际证明是我自己想多了。</p>
 <p>不过也不能说踩坑不好吧，生活总是在趟过一个又一个或大或小的坑中过去的。</p>
 <p>希望大家都能将遇到的每一个坑和挫折踩在脚下，快乐成长</p>
-
-            </div>
-        </article>
-        <div id="ga-tags">
-    
-    <span class="ga-tag">
-        <a class="ga-highlight" href="/tag/junit/">#junit</a>
-    </span>
-    
-    <span class="ga-tag">
-        <a class="ga-highlight" href="/tag/multi thread/">#multi thread</a>
-    </span>
-    
-</div>
+</article>
     </section>
 
     
-<section id="ga-content_pager">
-
-    <div class="next">
-        <h3>没有了</h3>
-        <p class="yue">这是最新的文章</p>
-    </div>
-
-
-    <div class="prev">
-        <a class="ga-highlight" href="/archives/happy-birthday-2-fayy/">菲宝生日快乐</a>
-        <p class="yue">生日快乐菲宝</p>
-    </div>
-
-</section>
-
-
-    
-
-</main>
-
-                <footer class="ga-mono" id="ga-footer">
-                    <section>
-                        <span id="ga-uptime"></span>
-                        <span class="brand">thend03's blog</span>
-                    </section>
-                    <section>
-                        <p class="copyright">
-                            <span>Copyright © 2022 thend03</span>
-                            <span>Powered by <a no-style href="https://github.com/AlanDecode/Maverick" target="_blank">Maverick & Galileo</a></span>
-                        </p>
-                        <div class="copyright">
-                            <span class="footer-addon">
-                                
-                            </span>
-                            <nav class="social-links">
-                                <ul><li><a class="no-style" title="Twitter" href="https://twitter.com/AlanDecode" target="_blank"><i class="gi gi-twitter"></i>Twitter</a></li><span class="separator">·</span><li><a class="no-style" title="GitHub" href="https://github.com/AlanDecode" target="_blank"><i class="gi gi-github"></i>GitHub</a></li><span class="separator">·</span><li><a class="no-style" title="Weibo" href="https://weibo.com/5245109677/" target="_blank"><i class="gi gi-weibo"></i>Weibo</a></li></ul>
-                            </nav>
-                        </div>
-                    </section>
-                    <script>
-                        var site_build_date = "2022-05-09T21:33+08:00"
-                    </script>
-                    <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/galileo-dc4baa7cf4.js"></script>
-                </footer>
+    <section id="content-pager">
+        
+        
+            <div class="prev">
+                <a class="card" href="/archives/happy-birthday-2-fayy/">
+                    <time>May 30 2022</time>
+                    <span>菲宝生日快乐</span>
+                </a>
             </div>
-        </div>
-    </div>
-
-    <!--katex-->
-    <script defer src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/katex.min.js"></script>
-    <script>
-    mathOpts = {
-        delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "\\[", right: "\\]", display: true},
-            {left: "$", right: "$", display: false},
-            {left: "\\(", right: "\\)", display: false}
-        ]
-    };
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/auto-render.min.js" onload="renderMathInElement(document.body, mathOpts);"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/ExSearch/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/ExSearch/ExSearch-493cb9cd89.js"></script>
+        
+    </section>
+    
 
     
+
+    <script>
+        document.body.classList.add('content');
+        document.body.classList.remove('archive');
+    </script>
+</div>
+                    <footer>
+                        <span>Copyright © 2022 thend03</span>
+                        
+    
+
+                        
+                    </footer>
+                </div>
+                
+<aside id="toc-container" class="no-scrollbar">
+    <span><i class="fa fa-align-right"></i> CONTENTS</span>
+    <div id="toc"></div>
+</aside>
+
+            </div>
+        </main>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/tocbot@4.10.0/dist/tocbot.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/kepler-ef161b04d5.js"></script>
+        <script>
+            function ExSearchCall(item){
+                if (item && item.length) {
+                    $('.ins-close').click(); // 关闭搜索框
+                    $('input.ins-search-input').val(''); // 清空
+                    let url = item.attr('data-url'); // 获取目标页面 URL
+                    $.pjax({url: url, 
+                        container: '#pjax-container',
+                        fragment: '#pjax-container',
+                        timeout: 8000, }); // 发起一次 PJAX 请求
+                }
+            }
+        </script>
+
+        <!--Valine-->
+        
+
+        <!--ExSearch-->
+        <script src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/ExSearch/ExSearch-493cb9cd89.js"></script>
+        
+        <!--katex-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/katex.min.css">
+        <script defer src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/katex.min.js"></script>
+        <script>
+        mathOpts = {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "\\[", right: "\\]", display: true},
+                {left: "$", right: "$", display: false},
+                {left: "\\(", right: "\\)", display: false}
+            ]
+        };
+        </script>
+        <script defer src="https://cdn.jsdelivr.net/gh/thend03/blog-maverick@gh-pages/assets/auto-render.min.js" onload="renderMathInElement(document.body, mathOpts);"></script>
+
+        
     </body>
 </html>
