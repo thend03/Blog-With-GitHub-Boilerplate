@@ -9,10 +9,9 @@ build_dir = "../dist/"
 index_page_size = 10
 archives_page_size = 20
 template = {
-    "name": "icarus",
-    "type": "git",
-    "url": "https://github.com/ppoffice/hexo-theme-icarus.git",
-    "branch": "latest"
+    "name": "Galileo",
+    "type": "local",
+    "path": "../Galileo"
 }
 enable_jsdelivr = {
     "enabled": True,
